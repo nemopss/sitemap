@@ -3,13 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"net/http"
-	"os"
+	"net/url"
+	"strings"
+
+	"github.com/nemopss/link"
 )
 
 func main() {
-	urlflag := flag.String("url", "https://secondthunder.github.io", "the url you want to build a sitemap")
+	urlflag := flag.String("url", "https://gophercises.com/", "the url you want to build a sitemap")
 	flag.Parse()
 
 	fmt.Println(*urlflag)
@@ -19,15 +21,29 @@ func main() {
 		panic(err)
 	}
 	defer resp.Body.Close()
-	io.Copy(os.Stdout, resp.Body)
-}
 
-/*
-	TODO:
-	1. GET the webpage
-	2. Parse all the links on the page
-	3. Build proper urls with our links
-	4. Filter out any links with a different domain
-	5. Find all pages (BFS)
-	6. Print out XML
-*/
+	links, _ := link.Parse(resp.Body)
+
+	reqUrl := resp.Request.URL
+	baseUrl := &url.URL{
+		Scheme: reqUrl.Scheme,
+		Host:   reqUrl.Host,
+	}
+	base := baseUrl.String()
+
+	var hrefs []string
+
+	for _, l := range links {
+		switch {
+		case strings.HasPrefix(l.Href, "/"):
+			hrefs = append(hrefs, base+l.Href)
+
+		case strings.HasPrefix(l.Href, "http"):
+			hrefs = append(hrefs, l.Href)
+		}
+	}
+
+	for _, href := range hrefs {
+		fmt.Println(href)
+	}
+}

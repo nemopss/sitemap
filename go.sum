@@ -1,0 +1,4 @@
+github.com/nemopss/link v0.0.0-20240603215855-46cbf940fe80 h1:zwPQfiLr4duVikX7Q+S56+meLUzkj7amg7OzaPnELGA=
+github.com/nemopss/link v0.0.0-20240603215855-46cbf940fe80/go.mod h1:EQJ7kMtgjcNuFKbrrdQ0erYL1zqQqNjaU5F0rVHQtOs=
+golang.org/x/net v0.25.0 h1:d/OCCoBEUq33pjydKrGQhw7IlUPI2Oylr+8qLx49kac=
+golang.org/x/net v0.25.0/go.mod h1:JkAGAh7GEvH74S6FOH42FLoXpXbE/aqXSrIQjXgsiwM=
