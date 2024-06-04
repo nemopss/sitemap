@@ -3,13 +3,23 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
 )
 
 func main() {
-	urlflag := flag.String("url", "https://github.com/nemopss", "the url you want to build a sitemap")
+	urlflag := flag.String("url", "https://secondthunder.github.io", "the url you want to build a sitemap")
 	flag.Parse()
 
 	fmt.Println(*urlflag)
+
+	resp, err := http.Get(*urlflag)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	io.Copy(os.Stdout, resp.Body)
 }
 
 /*
